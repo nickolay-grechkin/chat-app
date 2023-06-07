@@ -1,4 +1,5 @@
 import {type UserRepository} from "./user.repository";
+import {UserEntity} from "./user.entity";
 
 class UserService {
     private userRepository: UserRepository;
@@ -7,12 +8,10 @@ class UserService {
         this.userRepository = userRepository;
     }
 
-    public async findAll(): Promise<any> {
+    public async findAll(): Promise<UserEntity[]> {
         const users = await this.userRepository.findAll();
 
-        return {
-            users
-        }
+        return await this.userRepository.findAll();
     }
 }
 

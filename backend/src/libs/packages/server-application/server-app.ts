@@ -1,7 +1,7 @@
 import express, {Response, Request, Express, IRouterMatcher} from "express";
 import { IDatabase } from "../database/database";
-import { RouteParameters } from "../../../common/interfaces/routeParameters";
-import { HttpMethod } from "../../../common/enums/httpMethod";
+import { RouteParameters } from "../../../shared/libs/interfaces/routeParameters";
+import { HttpMethod } from "../../../shared/libs/enums/httpMethod";
 
 const router = express.Router();
 

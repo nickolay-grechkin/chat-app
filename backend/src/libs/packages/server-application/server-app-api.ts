@@ -1,4 +1,4 @@
-import {RouteParameters} from "../../../common/interfaces/routeParameters";
+import {RouteParameters} from "../../../shared/libs/interfaces/routeParameters";
 
 class ServerAppApi {
     public routes: RouteParameters[];

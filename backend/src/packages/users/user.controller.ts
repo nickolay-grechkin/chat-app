@@ -1,12 +1,14 @@
-import {Controller} from "../controller";
 import {UserService} from "./user.service";
-import {HttpMethod} from "../../common/enums/httpMethod";
+import {HttpMethod} from "../../shared/libs/enums/httpMethod";
+import {AppEndpoint} from "../../shared/libs/enums/enum";
+import {UserEntity} from "./user.entity";
+import {Controller} from "../../libs/packages/controller/controller";
 
 class UserController extends Controller {
     private userService: UserService;
 
     public constructor(userService: UserService) {
-        super('/users');
+        super(AppEndpoint.USERS);
 
         this.userService = userService;
 
@@ -17,7 +19,7 @@ class UserController extends Controller {
         });
     }
 
-    private async findAll(): Promise<{ status: any; payload: unknown }> {
+    private async findAll(): Promise<UserEntity[]> {
         return await this.userService.findAll();
     }
 }
