@@ -9,9 +9,11 @@ class UserService {
     }
 
     public async findAll(): Promise<UserEntity[]> {
-        const users = await this.userRepository.findAll();
-
         return await this.userRepository.findAll();
+    }
+
+    public async findByEmail(email: string): Promise<UserEntity | null> {
+        return this.userRepository.findByEmail(email);
     }
 }
 

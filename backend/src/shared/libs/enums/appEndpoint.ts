@@ -1,5 +1,6 @@
 enum AppEndpoint {
-    USERS = 'users'
+    USERS = '/users',
+    AUTH = '/auth'
 }
 
 export { AppEndpoint };

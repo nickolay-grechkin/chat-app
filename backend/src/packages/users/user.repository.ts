@@ -19,6 +19,23 @@ class UserRepository {
            })
         });
     }
+
+    public async findByEmail(email: string): Promise<UserEntity | null> {
+        const user = await this.userModel
+            .query()
+            .where('email', email)
+            .first();
+
+        if (!user) {
+            return null;
+        }
+
+        return UserEntity.initialize({
+            id: user.id,
+            email: user.email,
+            password: user.password
+        });
+    }
 }
 
 export { UserRepository };

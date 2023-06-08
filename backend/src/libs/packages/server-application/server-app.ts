@@ -33,6 +33,8 @@ class ServerApp {
     public async init(): Promise<void> {
         this.database.connect();
 
+        this.app.use(express.json());
+
         this.initRoutes();
 
         this.app.listen(4321,() => {
