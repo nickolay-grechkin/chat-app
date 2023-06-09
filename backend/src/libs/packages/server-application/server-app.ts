@@ -2,6 +2,7 @@ import express, {Response, Request, Express, IRouterMatcher} from "express";
 import { IDatabase } from "../database/database";
 import { RouteParameters } from "../../../shared/libs/interfaces/routeParameters";
 import { HttpMethod } from "../../../shared/libs/enums/httpMethod";
+import { authMiddleware } from "../authMiddleware/authMiddleware";
 
 const router = express.Router();
 
@@ -21,7 +22,8 @@ class ServerApp {
     private addRoute = (parameters: { path: string, method: HttpMethod, handler: (req: Request, res: Response) => void }) => {
         const { path, method, handler } = parameters;
 
-        router[method](path, handler);
+        // TODO do not import authMiddleware path as constructor args
+        router[method](path, authMiddleware, handler);
     }
 
     public initRoutes(): void {

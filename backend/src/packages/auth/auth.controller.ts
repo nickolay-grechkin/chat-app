@@ -15,8 +15,16 @@ class AuthController extends Controller {
             path: "/",
             method: HttpMethod.POST,
             handler: async (req, res) => {
-                const { email, password } = req.body;
-                res.status(200).send(await this.authService.login(email, password));
+                try {
+                    const {email, password} = req.body;
+
+                    const token = await this.authService.login(email, password);
+
+                    res.status(200).send(token);
+                } catch (err: any) {
+                    // TODO Implement proper error handling
+                    res.status(403).send(err.message);
+                }
             }});
     }
 }

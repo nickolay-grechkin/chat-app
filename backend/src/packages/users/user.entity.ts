@@ -1,3 +1,4 @@
+// TODO Investigate how this UserEntity works
 class UserEntity {
     private 'id': number | null;
 
@@ -29,6 +30,18 @@ class UserEntity {
         password: string | null
     }): UserEntity {
       return new UserEntity({ id, email, password });
+    }
+
+    public toObject(): {
+        id: number,
+        email: string,
+        password: string
+    } {
+        return {
+            id: this.id as number,
+            email: this.email as string,
+            password: this.password as string
+        }
     }
 }
 

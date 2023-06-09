@@ -16,9 +16,21 @@ class AuthService {
             return null;
         }
 
+        if (password !== user.password) {
+            throw new Error("Incorrect password");
+        }
 
-        return jwt.sign({ userId: 0 }, '123456');
+        // TODO Check for token expiration
+        // try {
+        //     jwt.verify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjAsImlhdCI6MTY4NjMyNzQ0NywiZXhwIjoxNjg2MzI3NDQ3fQ.WeMBakoUjwwF9udhE8EbtlDmNlqCCtpWiz0WixkT7Z8', '123456')
+        // } catch (err) {
+        //     return "JWT is expired";
+        // }
+
+        // TODO Replace with variables from env
+        return jwt.sign({ userId: user.id }, '123456', { expiresIn: '1d' });
     }
+
 }
 
 export { AuthService };

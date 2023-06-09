@@ -36,6 +36,7 @@ class UserRepository {
             password: user.password
         });
     }
+
 }
 
 export { UserRepository };

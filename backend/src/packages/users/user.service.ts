@@ -1,5 +1,6 @@
 import {type UserRepository} from "./user.repository";
 import {UserEntity} from "./user.entity";
+import {UserByEmailResponse} from "./libs/types/UserByEmailResponse";
 
 class UserService {
     private userRepository: UserRepository;
@@ -12,8 +13,14 @@ class UserService {
         return await this.userRepository.findAll();
     }
 
-    public async findByEmail(email: string): Promise<UserEntity | null> {
-        return this.userRepository.findByEmail(email);
+    public async findByEmail(email: string): Promise<UserByEmailResponse | null> {
+        const user = (await this.userRepository.findByEmail(email));
+
+        if (!user) {
+            return null;
+        }
+
+        return user.toObject();
     }
 }
 
