@@ -1,8 +1,9 @@
-import express, {Response, Request, Express, IRouterMatcher} from "express";
+import express, { Response, Request, Express } from "express";
 import { IDatabase } from "../database/database";
 import { RouteParameters } from "../../../shared/libs/interfaces/routeParameters";
 import { HttpMethod } from "../../../shared/libs/enums/httpMethod";
 import { authMiddleware } from "../authMiddleware/authMiddleware";
+import * as dotenv from 'dotenv';
 
 const router = express.Router();
 
@@ -22,8 +23,7 @@ class ServerApp {
     private addRoute = (parameters: { path: string, method: HttpMethod, handler: (req: Request, res: Response) => void }) => {
         const { path, method, handler } = parameters;
 
-        // TODO do not import authMiddleware path as constructor args
-        router[method](path, authMiddleware, handler);
+        router[method](path, handler);
     }
 
     public initRoutes(): void {
@@ -31,16 +31,20 @@ class ServerApp {
         this.app.use(router);
     }
 
+    public initMiddlewares(): void {
+        this.app.use(authMiddleware);
+        this.app.use(express.json());
+    }
 
     public async init(): Promise<void> {
+        dotenv.config();
         this.database.connect();
 
-        this.app.use(express.json());
-
+        this.initMiddlewares();
         this.initRoutes();
 
-        this.app.listen(4321,() => {
-            console.log("Listening on 4321");
+        this.app.listen(process.env.APP_PORT,() => {
+            console.log("Listening on " + process.env.APP_PORT);
         });
     }
 }

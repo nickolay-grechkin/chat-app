@@ -11,6 +11,7 @@ class AuthService {
 
     public login = async (email: string, password: string): Promise<string | null> => {
         const user = await this.userService.findByEmail(email);
+        const secret = process.env.SECRET_KEY ?? '';
 
         if (!user) {
             return null;
@@ -27,8 +28,7 @@ class AuthService {
         //     return "JWT is expired";
         // }
 
-        // TODO Replace with variables from env
-        return jwt.sign({ userId: user.id }, '123456', { expiresIn: '1d' });
+        return jwt.sign({ userId: user.id }, secret, { expiresIn: '1d' });
     }
 
 }

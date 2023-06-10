@@ -1,5 +1,5 @@
 import {Controller} from "../../libs/packages/controller/controller";
-import {AppEndpoint, HttpMethod} from "../../shared/libs/enums/enum";
+import {AppEndpoint, HttpMethod, HttpStatus} from "../../shared/libs/enums/enum";
 import {AuthService} from "./auth.service";
 
 
@@ -7,7 +7,7 @@ class AuthController extends Controller {
     private authService: AuthService;
 
     constructor(authService: AuthService) {
-        super(AppEndpoint.AUTH);
+        super(AppEndpoint.LOGIN);
 
         this.authService = authService;
 
@@ -20,10 +20,10 @@ class AuthController extends Controller {
 
                     const token = await this.authService.login(email, password);
 
-                    res.status(200).send(token);
+                    res.status(HttpStatus.SUCCESS).send(token);
                 } catch (err: any) {
                     // TODO Implement proper error handling
-                    res.status(403).send(err.message);
+                    res.status(HttpStatus.FORBIDDEN).send(err.message);
                 }
             }});
     }
