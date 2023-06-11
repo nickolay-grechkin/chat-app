@@ -1,5 +1,7 @@
 import {UserService} from "../users/user.service";
 import * as jwt from "jsonwebtoken";
+import {ErrorMessage} from "../../shared/libs/enums/enum";
+import {token} from "../../libs/packages/token/token";
 
 class AuthService {
     private userService: UserService;
@@ -11,24 +13,16 @@ class AuthService {
 
     public login = async (email: string, password: string): Promise<string | null> => {
         const user = await this.userService.findByEmail(email);
-        const secret = process.env.SECRET_KEY ?? '';
 
         if (!user) {
             return null;
         }
 
         if (password !== user.password) {
-            throw new Error("Incorrect password");
+            throw new Error(ErrorMessage.INCORRECT_PASSWORD);
         }
 
-        // TODO Check for token expiration
-        // try {
-        //     jwt.verify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjAsImlhdCI6MTY4NjMyNzQ0NywiZXhwIjoxNjg2MzI3NDQ3fQ.WeMBakoUjwwF9udhE8EbtlDmNlqCCtpWiz0WixkT7Z8', '123456')
-        // } catch (err) {
-        //     return "JWT is expired";
-        // }
-
-        return jwt.sign({ userId: user.id }, secret, { expiresIn: '1d' });
+        return token.create<{ userId: number }>({ userId: user.id });
     }
 
 }

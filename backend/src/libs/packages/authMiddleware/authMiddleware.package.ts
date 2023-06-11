@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
-import {HttpStatus} from "../../../shared/libs/enums/enum";
+import {ErrorMessage, HttpStatus} from "../../../shared/libs/enums/enum";
 import { whiteRoutes } from "../server-application/libs/constants/white-routes";
+import { token as tokenPackage } from '../token/token';
 
 // TODO Refactor
 const authMiddleware = (req: Request, res: Response, next: any) => {
@@ -20,17 +20,15 @@ const authMiddleware = (req: Request, res: Response, next: any) => {
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-        const secret = process.env.SECRET_KEY ?? '';
 
-        jwt.verify(token, secret, (err, user) => {
-           if (err) {
-               res.status(HttpStatus.FORBIDDEN).send("Access to this route is forbidden");
-           }
-           (req as any).user = user;
-           next();
-        });
+        const decodedTokenPayload = tokenPackage.decode(token);
+        if (decodedTokenPayload?.err) {
+            res.status(HttpStatus.FORBIDDEN).send(ErrorMessage.FORBIDDEN);
+        }
+        (req as any).user = decodedTokenPayload?.payload;
+        next();
     } else {
-        res.status(HttpStatus.UNAUTHORIZED).send('You need to provide an authorization token to access this endpoint.')
+        res.status(HttpStatus.UNAUTHORIZED).send(ErrorMessage.UNAUTHORIZED)
     }
 }
 
