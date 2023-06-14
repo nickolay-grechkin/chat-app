@@ -6,6 +6,7 @@ import {AuthService} from "./auth.service";
 class AuthController extends Controller {
     private authService: AuthService;
 
+    // TODO Implement refresh token
     constructor(authService: AuthService) {
         super(AppEndpoint.LOGIN);
 

@@ -22,10 +22,11 @@ const authMiddleware = (req: Request, res: Response, next: any) => {
         const token = authHeader.split(' ')[1];
 
         const decodedTokenPayload = tokenPackage.decode(token);
+
         if (decodedTokenPayload?.err) {
             res.status(HttpStatus.FORBIDDEN).send(ErrorMessage.FORBIDDEN);
         }
-        (req as any).user = decodedTokenPayload?.payload;
+        (req as any).user = decodedTokenPayload.payload;
         next();
     } else {
         res.status(HttpStatus.UNAUTHORIZED).send(ErrorMessage.UNAUTHORIZED)

@@ -13,7 +13,7 @@ class Token implements IToken {
     public decode(token: string): any {
         const secret = process.env.SECRET_KEY ?? '';
 
-        jwt.verify(token, secret, (err, payload) => {
+        return jwt.verify(token, secret, (err, payload) => {
             if (err) {
                 return { err, payload: undefined }
             }

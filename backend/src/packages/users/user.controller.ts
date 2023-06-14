@@ -15,7 +15,9 @@ class UserController extends Controller {
         this.addRoute({
             path: '/',
             method: HttpMethod.GET,
-            handler: async (req, res) => res.status(HttpStatus.SUCCESS).send(await this.findAll())
+            handler: async (req, res) => {
+                res.status(HttpStatus.SUCCESS).send(await this.findAll());
+            }
         });
     }
 
