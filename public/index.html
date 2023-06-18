@@ -48,7 +48,7 @@
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const message = document.getElementById('inputBox').value;
-        ws.send(message);
+        ws.send(JSON.stringify({ id: 1, message }));
         document.getElementById('inputBox').value = ''
     })
 </script>
