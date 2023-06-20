@@ -1,6 +1,8 @@
 import {Controller} from "../../libs/packages/controller/controller";
 import {AppEndpoint, HttpMethod, HttpStatus} from "../../shared/libs/enums/enum";
 import {AuthService} from "./auth.service";
+import {MessageRepository} from "../messages/message.repository";
+import {MessageModel} from "../messages/message.model";
 
 
 class AuthController extends Controller {
@@ -21,7 +23,9 @@ class AuthController extends Controller {
 
                     const token = await this.authService.login(email, password);
 
-                    res.status(HttpStatus.SUCCESS).send(token);
+                    console.log(await new MessageRepository(MessageModel).createMessage());
+                    res.status(HttpStatus.SUCCESS).send();
+                    // res.status(HttpStatus.SUCCESS).send(token);
                 } catch (err: any) {
                     // TODO Implement proper error handling
                     res.status(HttpStatus.FORBIDDEN).send(err.message);

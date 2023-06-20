@@ -1,4 +1,4 @@
-import {Model, RelationMappings} from "objection";
+import {Model} from "objection";
 
 class UserModel extends Model {
     public 'email': string;

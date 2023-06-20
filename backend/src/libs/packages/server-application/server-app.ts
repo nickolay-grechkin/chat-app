@@ -5,7 +5,7 @@ import { HttpMethod } from "../../../shared/libs/enums/httpMethod";
 import { authMiddleware } from "../authMiddleware/authMiddleware";
 import * as dotenv from 'dotenv';
 import * as http from 'http';
-import {Socket} from "../socket/socket.package";
+import { Socket } from "../socket/socket.package";
 
 const router = express.Router();
 
