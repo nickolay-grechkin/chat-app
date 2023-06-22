@@ -1,31 +1,22 @@
 import {MessageModel} from "./message.model";
-import {UserEntity} from "../users/user.entity";
+import {SaveMessageDto} from "./common/types/save-message-dto";
 
 class MessageRepository {
+    // TODO Why should i use typeof here
     private messageModel: typeof MessageModel;
 
     public constructor(messageModel: typeof MessageModel) {
         this.messageModel = messageModel;
     }
 
-    public async createMessage(): Promise<any> {
-        await this.messageModel.query().insert({
-            sender_id: 0,
-            receiver_id: 1,
-            dialog_id: 0,
-            content: 'First message'
+    public async createMessage(message: SaveMessageDto): Promise<any> {
+        const { senderId, receiverId, content, dialogId } = message;
+        return this.messageModel.query().insert({
+            sender_id: senderId,
+            receiver_id: receiverId,
+            dialog_id: dialogId,
+            content: content
         }).into('messages');
-        const messages = await this.messageModel.query().select();
-
-        // return messages.map((message) => {
-        //     return MessageEntity.initialize({
-        //         id: message.id,
-        //         senderId: message.senderId,
-        //         receiverId: message.receiverId,
-        //         content: message.content,
-        //         dialogId: message.
-        //     })
-        // });
     }
 }
 

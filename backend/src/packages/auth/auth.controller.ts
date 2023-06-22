@@ -1,8 +1,8 @@
-import {Controller} from "../../libs/packages/controller/controller";
-import {AppEndpoint, HttpMethod, HttpStatus} from "../../shared/libs/enums/enum";
-import {AuthService} from "./auth.service";
-import {MessageRepository} from "../messages/message.repository";
-import {MessageModel} from "../messages/message.model";
+import { Controller } from "../../libs/packages/controller/controller";
+import { AppEndpoint, HttpMethod, HttpStatus } from "../../shared/libs/enums/enum";
+import { AuthService } from "./auth.service";
+import {QueryArguments} from "../../shared/libs/types/query-arguments";
+import {Request, Response} from "express";
 
 
 class AuthController extends Controller {
@@ -10,27 +10,27 @@ class AuthController extends Controller {
 
     // TODO Implement refresh token
     constructor(authService: AuthService) {
-        super(AppEndpoint.LOGIN);
+        super();
 
         this.authService = authService;
 
         this.addRoute({
-            path: "/",
+            path: AppEndpoint.LOGIN,
             method: HttpMethod.POST,
-            handler: async (req, res) => {
-                try {
-                    const {email, password} = req.body;
+            handler: (req, res) => this.login(req, res)
+        });
+    }
 
-                    const token = await this.authService.login(email, password);
+    private async login(req: Request, res: Response) {
+        try {
+            const { email, password } = req.body;
+            const token = await this.authService.login(email, password);
 
-                    console.log(await new MessageRepository(MessageModel).createMessage());
-                    res.status(HttpStatus.SUCCESS).send();
-                    // res.status(HttpStatus.SUCCESS).send(token);
-                } catch (err: any) {
-                    // TODO Implement proper error handling
-                    res.status(HttpStatus.FORBIDDEN).send(err.message);
-                }
-            }});
+            res.status(HttpStatus.SUCCESS).send(token);
+        } catch (err: any) {
+            // TODO Implement proper error handling
+            res.status(HttpStatus.FORBIDDEN).send(err.message);
+        }
     }
 }
 

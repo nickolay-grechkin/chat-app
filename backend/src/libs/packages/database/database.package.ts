@@ -8,17 +8,27 @@ class Database implements IDatabase{
     }
 
     public initialConfig() {
+        const {
+            CLIENT,
+            DATABASE,
+            MIGRATIONS_TABLE_NAME,
+            HOST,
+            USER,
+            PASSWORD,
+            MIGRATIONS_DIRECTORY
+        } = process.env;
+
         return {
-            client: 'pg',
+            client: CLIENT,
             connection: {
-                host: 'localhost',
-                user: 'postgres',
-                password: 'postgres',
-                database: 'chatapp',
+                host: HOST,
+                user: USER,
+                password: PASSWORD,
+                database: DATABASE,
             },
             migrations: {
-                directory: 'src/db/migrations',
-                tableName: 'migrations'
+                directory: MIGRATIONS_DIRECTORY,
+                tableName:MIGRATIONS_TABLE_NAME
             }
         };
     }
