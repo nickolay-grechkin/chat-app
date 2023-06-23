@@ -1,5 +1,6 @@
 import http from "http";
 import ws, { WebSocketServer } from 'ws';
+import {messagesService} from "../../../packages/messages/messages";
 
 class Socket {
     private webSocketServer: ws.Server;
@@ -16,6 +17,8 @@ class Socket {
                     if (client.readyState === ws.OPEN) {
                         const parsedRequest = JSON.parse(msg);
                         client.send(parsedRequest.message);
+                        const { receiverId, senderId, content, dialogId } = parsedRequest;
+                        messagesService.saveMessage({ receiverId, senderId, content, dialogId });
                     }
                 }
             })

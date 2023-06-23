@@ -18,7 +18,6 @@ class MessagesController extends Controller{
 
     private async saveMessage(req: Request, res: Response) {
         try {
-            console.log(req.body);
             await this.messagesService.saveMessage(req.body);
             res.status(HttpStatus.SUCCESS).send();
         } catch (error) {

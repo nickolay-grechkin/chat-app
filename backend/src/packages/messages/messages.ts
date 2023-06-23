@@ -7,4 +7,4 @@ const messagesRepository = new MessageRepository(MessageModel);
 const messagesService = new MessageService(messagesRepository);
 const messagesController = new MessagesController(messagesService);
 
-export { messagesController };
+export { messagesController, messagesService };
