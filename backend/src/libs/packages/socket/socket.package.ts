@@ -4,20 +4,25 @@ import {messagesService} from "../../../packages/messages/messages";
 
 class Socket {
     private webSocketServer: ws.Server;
+    private connectedClients: ws[];
 
     public constructor(server: http.Server) {
         this.webSocketServer = new WebSocketServer({ server });
+        this.connectedClients = [];
     }
 
     public init() {
         this.webSocketServer.on('connection', (client) => {
-            console.log('Client connected !')
+            this.connectedClients.push(client);
+            client.on('open', (msg: string) => {
+                console.log(msg);
+            });
             client.on('message', (msg: string) => {
+                console.log(msg);
                 for (const client of this.webSocketServer.clients) {
                     if (client.readyState === ws.OPEN) {
-                        const parsedRequest = JSON.parse(msg);
-                        client.send(parsedRequest.message);
-                        const { receiverId, senderId, content, dialogId } = parsedRequest;
+                        const { receiverId, senderId, content, dialogId } = JSON.parse(msg);
+                        client.send(content);
                         messagesService.saveMessage({ receiverId, senderId, content, dialogId });
                     }
                 }

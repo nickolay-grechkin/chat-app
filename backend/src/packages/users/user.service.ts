@@ -10,7 +10,7 @@ class UserService {
     }
 
     public async findAll(): Promise<UserEntity[]> {
-        return await this.userRepository.findAll();
+        return this.userRepository.findAll();
     }
 
     public async findByEmail(email: string): Promise<UserByEmailResponse | null> {

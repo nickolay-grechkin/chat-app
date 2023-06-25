@@ -1,5 +1,6 @@
 import {MessageRepository} from "./message.repository";
 import {SaveMessageDto} from "./common/types/save-message-dto";
+import {MessageEntity} from "./message.entity";
 
 class MessageService {
     // TODO Why message repository as a type works here
@@ -10,7 +11,11 @@ class MessageService {
     }
 
     public async saveMessage(message: SaveMessageDto) {
-        return await this.messageRepository.createMessage(message);
+        return this.messageRepository.createMessage(message);
+    }
+
+    public async getMessagesByDialogId(dialogId: number): Promise<MessageEntity[] | null> {
+        return this.messageRepository.getAllByDialogId(dialogId);
     }
 }
 

@@ -21,7 +21,6 @@
 <script type="text/javascript">
     const ws = new WebSocket(`ws://localhost:4321`);
     ws.binaryType = "blob";
-    // Log socket opening and closing
     ws.addEventListener("open", event => {
         console.log("Websocket connection opened");
     });
@@ -39,7 +38,6 @@
             };
             reader.readAsText(message.data);
         } else {
-            console.log("Result2: " + message.data);
             msgDiv.innerHTML = message.data;
             document.getElementById('messages').appendChild(msgDiv);
         }
@@ -48,7 +46,7 @@
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const message = document.getElementById('inputBox').value;
-        ws.send(JSON.stringify({ id: 1, message }));
+        ws.send(JSON.stringify({ content: message, receiverId: 1, senderId: 0, dialogId: 0 }));
         document.getElementById('inputBox').value = ''
     })
 </script>
