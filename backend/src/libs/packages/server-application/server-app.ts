@@ -42,7 +42,7 @@ class ServerApp {
     }
 
     private initSocket(): void {
-        new Socket(this.server).init();
+        Socket.init(this.server);
     }
 
     public async init(): Promise<void> {
