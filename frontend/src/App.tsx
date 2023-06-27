@@ -1,43 +1,37 @@
-import {useEffect, useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, {useEffect, useState} from 'react'
+
 import './App.css'
 import {io} from "socket.io-client";
 
+const socket = io('ws://localhost:4321', {
+    transports: ['websocket']
+});
+
 function App() {
-  const [count, setCount] = useState(0)
+
+    const [message, setMessage] = useState<string>();
 
     useEffect(() => {
-       const socket = io('ws://localhost:4321', {
-           transports: ['websocket']
-       });
        socket.emit("join room", 1);
-    });
+       socket.on("message", (message) => {
+          console.log("Message: ", message);
+       });
+    }, []);
 
-      return (
+    const handleSendMessage = () => {
+        socket.emit('message', { dialogId: 1, senderId: 1, receiverId: 0, content: message});
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMessage(e.target.value);
+    }
+
+    return (
         <>
-          <div>
-            <a href="https://vitejs.dev" target="_blank">
-              <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://react.dev" target="_blank">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
-          </div>
-          <h1>Vite + React</h1>
-          <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>
-              count is {count}
-            </button>
-            <p>
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-          </div>
-          <p className="read-the-docs">
-            Click on the Vite and React logos to learn more
-          </p>
+            <input value={message} onChange={handleChange} />
+            <button onClick={handleSendMessage}>Send</button>
         </>
-      );
+    );
 }
 
 export default App
