@@ -1,44 +1,57 @@
-class MessageEntity {
-    private 'id': number | null;
-    private 'senderId': number | null;
-    private 'receiverId': number | null;
-    private 'dialogId': number | null;
+import {BaseEntity} from "../common/classes/classes";
+
+class MessageEntity extends BaseEntity {
+    private 'userId': number | null;
+    private 'roomId': number | null;
     private 'content': string | null;
 
     private constructor({
         id,
-        senderId,
-        receiverId,
-        dialogId,
-        content
+        userId,
+        roomId,
+        content,
+        createdAt,
+        updatedAt
     }: {
         id: number | null,
-        senderId: number | null,
-        receiverId: number | null,
-        dialogId: number | null,
-        content: string | null
+        userId: number | null,
+        roomId: number | null,
+        content: string | null,
+        createdAt: string | null,
+        updatedAt: string | null
     }) {
+        super();
         this.id = id;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.dialogId = dialogId;
+        this.userId = userId;
+        this.roomId = roomId;
         this.content = content;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static initialize({
         id,
-        senderId,
-        receiverId,
-        dialogId,
-        content
+        userId,
+        roomId,
+        content,
+        createdAt,
+        updatedAt
     }: {
         id: number | null,
-        senderId: number | null,
-        receiverId: number | null,
-        dialogId: number | null,
-        content: string | null
+        userId: number | null,
+        roomId: number | null,
+        content: string | null,
+        createdAt: string | null,
+        updatedAt: string | null
     }) {
-        return new MessageEntity({ id, content, dialogId, receiverId, senderId });
+        return new MessageEntity({
+            id,
+            content,
+            userId,
+            roomId,
+            createdAt,
+            updatedAt
+        });
     }
 }
 

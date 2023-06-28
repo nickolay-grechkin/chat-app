@@ -9,8 +9,8 @@ class Socket {
                 socket.join(String(roomId));
             });
             socket.on('message', message => {
-                const { receiverId, senderId, content, dialogId } = message;
-                messagesService.saveMessage({ receiverId, senderId, content, dialogId });
+                const { userId, roomId, content } = message;
+                messagesService.saveMessage({ userId, roomId, content });
                 socket.to(String(message.dialogId)).emit('message', message);
             });
             socket.on('leave room', roomId => {

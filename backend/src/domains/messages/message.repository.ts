@@ -11,11 +11,10 @@ class MessageRepository {
     }
 
     public async createMessage(message: SaveMessageDto): Promise<any> {
-        const { senderId, receiverId, content, dialogId } = message;
+        const { userId, roomId, content } = message;
         return this.messageModel.query().insert({
-            sender_id: senderId,
-            receiver_id: receiverId,
-            dialog_id: dialogId,
+            user_id: userId,
+            room_id: roomId,
             content: content
         }).into('messages');
     }
@@ -29,16 +28,18 @@ class MessageRepository {
 
         return messages.map(({
             id,
-            receiver_id,
-            dialog_id,
+            user_id,
+            room_id,
+            created_at,
+            updated_at,
             content,
-            sender_id
         }) => MessageEntity.initialize({
             id,
-            receiverId: receiver_id,
-            dialogId: dialog_id,
+            userId: user_id,
+            roomId: room_id,
             content,
-            senderId: sender_id
+            createdAt: created_at,
+            updatedAt: updated_at
         }));
     }
 }

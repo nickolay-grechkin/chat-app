@@ -1,14 +1,13 @@
-import {Model} from "objection";
+import { BaseModel } from "../common/classes/classes";
+import {Table} from "../../common/enums/enum";
 
-class MessageModel extends Model {
-    public 'id': number | null;
-    public 'sender_id': number | null;
-    public 'receiver_id': number | null;
-    public 'dialog_id': number | null;
+class MessageModel extends BaseModel {
+    public 'user_id': number | null;
+    public 'room_id': number | null;
     public 'content': string | null;
 
     public static override get tableName(): string {
-        return 'messages';
+        return Table.MESSAGES;
     }
 
     public static override get relationMappings() {

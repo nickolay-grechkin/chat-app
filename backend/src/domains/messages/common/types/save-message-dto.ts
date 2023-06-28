@@ -1,8 +1,7 @@
 type SaveMessageDto = {
-    receiverId: number;
-    senderId: number;
-    dialogId: number;
+    userId: number;
     content: string;
+    roomId: number;
 }
 
 export { SaveMessageDto };

@@ -4,6 +4,7 @@ import { IDatabase } from "../../services/common/interfaces/database.interface";
 
 class Database implements IDatabase{
     public connect (): ReturnType<IDatabase['connect']> {
+        console.log(this.initialConfig());
         Model.knex(Knex(this.initialConfig()));
     }
 
@@ -19,16 +20,16 @@ class Database implements IDatabase{
         } = process.env;
 
         return {
-            client: CLIENT,
+            client: 'pg',
             connection: {
-                host: HOST,
-                user: USER,
-                password: PASSWORD,
-                database: DATABASE,
+                host: 'localhost',
+                user: 'postgres',
+                password: 'postgres',
+                database: 'chatapp',
             },
             migrations: {
-                directory: MIGRATIONS_DIRECTORY,
-                tableName:MIGRATIONS_TABLE_NAME
+                directory: 'src/db/migrations',
+                tableName: 'migrations'
             }
         };
     }
