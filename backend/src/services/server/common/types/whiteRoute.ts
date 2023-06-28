@@ -1,0 +1,8 @@
+import { HttpMethod } from "../../../../common/enums/httpMethod";
+
+type WhiteRoute = {
+    routePath: string,
+    method: HttpMethod
+}
+
+export { WhiteRoute };

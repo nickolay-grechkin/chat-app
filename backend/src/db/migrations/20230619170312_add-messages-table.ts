@@ -4,9 +4,8 @@ const TABLE_NAME = 'messages';
 
 const ColumnName = {
     ID: 'id',
-    SENDER_ID: 'sender_id',
-    RECEIVER_ID: 'receiver_id',
-    DIALOG_ID: 'dialog_id',
+    USER_ID: 'user_id',
+    ROOM_ID: 'room_id',
     CONTENT: 'content',
     CREATED_AT: 'created_at',
     UPDATED_AT: 'updated_at',
@@ -15,9 +14,8 @@ const ColumnName = {
 function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(TABLE_NAME, (table) => {
         table.increments(ColumnName.ID).primary();
-        table.integer(ColumnName.SENDER_ID).notNullable();
-        table.integer(ColumnName.RECEIVER_ID).notNullable();
-        table.integer(ColumnName.DIALOG_ID).notNullable();
+        table.integer(ColumnName.USER_ID).notNullable();
+        table.integer(ColumnName.ROOM_ID).notNullable();
         table.string(ColumnName.CONTENT).notNullable();
         table
             .dateTime(ColumnName.CREATED_AT)

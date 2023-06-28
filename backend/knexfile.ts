@@ -1,3 +1,3 @@
-import { database } from "./src/libs/packages/database/database";
+import { database } from "./src/configs/database/database";
 
 export default database.initialConfig();
