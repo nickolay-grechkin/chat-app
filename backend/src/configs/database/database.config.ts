@@ -4,7 +4,6 @@ import { IDatabase } from "../../services/common/interfaces/database.interface";
 
 class Database implements IDatabase{
     public connect (): ReturnType<IDatabase['connect']> {
-        console.log(this.initialConfig());
         Model.knex(Knex(this.initialConfig()));
     }
 
