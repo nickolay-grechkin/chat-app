@@ -14,8 +14,12 @@ class MessageService {
         return this.messageRepository.createMessage(message);
     }
 
-    public async getMessagesByDialogId(dialogId: number): Promise<MessageEntity[] | null> {
-        return this.messageRepository.getAllByDialogId(dialogId);
+    public async getAllMessages(): Promise<void> {
+        this.messageRepository.getAllMessages();
+    }
+
+    public async getMessagesByRoomId(roomId: number): Promise<MessageEntity[] | null> {
+        return this.messageRepository.getAllByRoomId(roomId);
     }
 }
 

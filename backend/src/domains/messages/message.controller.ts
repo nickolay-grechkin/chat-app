@@ -18,7 +18,7 @@ class MessagesController extends Controller{
         this.addRoute({
             path: AppEndpoint.MESSAGE,
             method: HttpMethod.GET,
-            handler: (req, res) => this.getMessagesByDialogId(req, res)
+            handler: (req, res) => this.getMessagesByRoomId(req, res)
         })
     }
 
@@ -31,14 +31,14 @@ class MessagesController extends Controller{
         }
     }
 
-    private async getMessagesByDialogId(req: Request, res: Response) {
+    private async getMessagesByRoomId(req: Request, res: Response) {
         try {
-            const { dialogId } = req.query;
-            if (!dialogId) {
+            const { roomId } = req.query;
+            if (!roomId) {
                 throw Error("Dialog id query parameter is missing");
             }
 
-            res.status(HttpStatus.SUCCESS).send(await this.messagesService.getMessagesByDialogId(Number(dialogId)));
+            res.status(HttpStatus.SUCCESS).send(await this.messagesService.getMessagesByRoomId(Number(roomId)));
         } catch (err) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }

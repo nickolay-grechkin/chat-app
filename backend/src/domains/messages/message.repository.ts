@@ -19,8 +19,15 @@ class MessageRepository {
         }).into('messages');
     }
 
-    public async getAllByDialogId(dialogId: number): Promise<MessageEntity[] | null> {
-        const messages = await this.messageModel.query().where('dialog_id', dialogId).select();
+    public async getAllMessages(): Promise<void> {
+        const messages = await this.messageModel
+            .query()
+            .select()
+            .withGraphJoined('user');
+    }
+
+    public async getAllByRoomId(roomId: number): Promise<MessageEntity[] | null> {
+        const messages = await this.messageModel.query().where('room_id', roomId).select();
 
         if (!messages) {
             return null;
