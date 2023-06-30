@@ -19,7 +19,7 @@ class RoomRepository {
             id: room.id,
             name: room.name,
             picture: room.picture,
-            lastMessage: room.lastMessage
+            lastMessage: room.last_message
         }));
     }
 }

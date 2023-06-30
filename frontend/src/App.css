@@ -1,42 +1,80 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.sidebar {
+  background-color: #f1f1f1;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.room {
+  height: 50px;
+  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 3px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.messages-feed {
+  background-color: #f1f1f1;
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
 }
 
-.card {
-  padding: 2em;
+.messages-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  overflow-y: auto;
 }
 
-.read-the-docs {
+.message {
+  margin-bottom: 10px;
+  color: white;
+  font-weight: 600;
+}
+
+.own-message {
+  background-color: rgb(118,106,200);
+}
+
+.received-message {
+  background-color: rgb(33,33,33);
+}
+
+.message__author {
+  font-weight: bold;
+}
+
+.message__content {
+  margin-top: 5px;
+}
+
+.message__timestamp {
   color: #888;
+  font-size: 12px;
+}
+
+.text-area-wrapper {
+  display: flex;
+  gap: 6px;
+}
+
+textarea {
+  width: 100%;
+}
+
+.send-button {
+
 }

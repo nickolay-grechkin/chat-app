@@ -27,7 +27,11 @@ class MessageRepository {
     }
 
     public async getAllByRoomId(roomId: number): Promise<MessageEntity[] | null> {
-        const messages = await this.messageModel.query().where('room_id', roomId).select();
+        const messages = await this.messageModel
+            .query()
+            .where('room_id', roomId)
+            .orderBy('created_at', 'asc')
+            .select();
 
         if (!messages) {
             return null;

@@ -2,7 +2,6 @@ import {Controller} from "../common/classes/classes";
 import {AppEndpoint, HttpMethod, HttpStatus} from "../../common/enums/enum";
 import {Request, Response} from "express";
 import {MessageService} from "./message.service";
-import {roomRepository} from "../rooms/rooms";
 
 class MessagesController extends Controller{
     private messagesService: MessageService

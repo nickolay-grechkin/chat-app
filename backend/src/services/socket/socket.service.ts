@@ -10,8 +10,9 @@ class Socket {
             });
             socket.on('message', message => {
                 const { userId, roomId, content } = message;
+                console.log(message);
                 messagesService.saveMessage({ userId, roomId, content });
-                socket.to(String(message.dialogId)).emit('message', message);
+                socket.to(String(roomId)).emit('message', message);
             });
             socket.on('leave room', roomId => {
                socket.leave(String(roomId));

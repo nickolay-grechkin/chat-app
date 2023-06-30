@@ -6,7 +6,7 @@ import { Model, RelationMappings } from "objection";
 class RoomModel extends BaseModel {
     public 'name': string | null;
     public 'picture': string | null;
-    public 'lastMessage': string | null;
+    public 'last_message': string | null;
     public 'users': UserModel[] | null;
 
     public static override get tableName(): string {

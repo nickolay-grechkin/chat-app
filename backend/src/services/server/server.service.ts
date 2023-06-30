@@ -6,6 +6,7 @@ import { authMiddleware } from "../../middlewares/authMiddleware/authMiddleware"
 import * as dotenv from 'dotenv';
 import * as http from 'http';
 import { Socket } from "../socket/socket.service";
+import cors from 'cors';
 
 const router = express.Router();
 
@@ -37,6 +38,7 @@ class ServerService {
     }
 
     private initMiddlewares(): void {
+        this.app.use(cors());
         this.app.use(authMiddleware);
         this.app.use(express.json());
     }
@@ -48,7 +50,6 @@ class ServerService {
     public async init(): Promise<void> {
         dotenv.config();
         this.database.connect();
-
         this.initMiddlewares();
         this.initRoutes();
         this.initSocket();

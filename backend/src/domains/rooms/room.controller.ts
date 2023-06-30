@@ -2,7 +2,7 @@ import {Controller} from "../common/classes/classes";
 import {RoomService} from "./room.service";
 import {HttpMethod} from "../../common/enums/httpMethod";
 import {Request, Response} from "express";
-import {HttpStatus} from "../../common/enums/enum";
+import {AppEndpoint, HttpStatus} from "../../common/enums/enum";
 
 class RoomController extends Controller {
     private roomService: RoomService;
@@ -13,7 +13,7 @@ class RoomController extends Controller {
         this.roomService = roomService;
 
         this.addRoute({
-            path: '/rooms',
+            path: AppEndpoint.ROOMS,
             method: HttpMethod.GET,
             handler: (req, res) => this.getAllRoomsByUserId(req, res)
         });
