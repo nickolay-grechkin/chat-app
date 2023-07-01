@@ -37,6 +37,22 @@ class UserRepository {
         });
     }
 
+    public async findById(id: number): Promise<UserEntity | null> {
+        const user = await this.userModel
+            .query()
+            .where('id', id)
+            .first();
+
+        if (!user) {
+            return null;
+        }
+
+        return UserEntity.initialize({
+            id: user.id,
+            email: user.email,
+            password: user.password
+        });
+    }
 }
 
 export { UserRepository };

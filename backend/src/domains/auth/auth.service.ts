@@ -2,6 +2,8 @@ import {UserService} from "../users/user.service";
 import * as jwt from "jsonwebtoken";
 import {ErrorMessage} from "../../common/enums/enum";
 import {token} from "../../services/token/token";
+import {UserEntity} from "../users/user.entity";
+import {UserByEmailResponse} from "../users/common/types/userByEmailResponse";
 
 class AuthService {
     private userService: UserService;
@@ -11,7 +13,7 @@ class AuthService {
 
     }
 
-    public login = async (email: string, password: string): Promise<string | null> => {
+    public login = async (email: string, password: string): Promise<{ token: string, userId: number } | null> => {
         const user = await this.userService.findByEmail(email);
 
         if (!user) {
@@ -22,7 +24,7 @@ class AuthService {
             throw new Error(ErrorMessage.INCORRECT_PASSWORD);
         }
 
-        return token.create<{ userId: number }>({ userId: user.id });
+        return { token: token.create<{ userId: number }>({userId: user.id}), userId: user.id };
     }
 
 }

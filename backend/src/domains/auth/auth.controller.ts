@@ -23,9 +23,9 @@ class AuthController extends Controller {
     private async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
-            const token = await this.authService.login(email, password);
+            const loginResponse = await this.authService.login(email, password);
 
-            res.status(HttpStatus.SUCCESS).send(token);
+            res.status(HttpStatus.SUCCESS).send(loginResponse);
         } catch (err: any) {
             // TODO Implement proper error handling
             res.status(HttpStatus.FORBIDDEN).send(err.message);

@@ -20,7 +20,10 @@ const Login = (): JSX.Element => {
         if (email && password) {
             try {
                 const loginResponse = await ApiService.login(email, password);
-                localStorage.setItem('token', loginResponse.data);
+
+                localStorage.setItem('token', loginResponse.data.token);
+                localStorage.setItem('userId', loginResponse.data.userId)
+
                 navigate('/');
             } catch(error) {
                 console.error(error);

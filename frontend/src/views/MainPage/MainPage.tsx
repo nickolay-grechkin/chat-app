@@ -1,5 +1,4 @@
-import React, {JSX, useEffect, useState} from "react";
-import axios from "axios";
+import React, {JSX, useEffect, useMemo, useState} from "react";
 import {Message} from "semantic-ui-react";
 import {io} from "socket.io-client";
 import {ApiService} from "../../services/api-service.ts";
@@ -12,25 +11,32 @@ const MainPage = (): JSX.Element => {
     const [message, setMessage] = useState<string>();
     const [messages, setMessages] = useState<any[]>([]);
     const [rooms, setRooms] = useState<any[]>();
+    const [roomId, setRoomId] = useState<number>();
+
+    const userId = useMemo(() => localStorage.getItem('userId'), []);
 
     useEffect(() => {
-        socket.emit("join room", 0);
-        socket.on("message", (message) => {
-            console.log("Message: ", message);
-        });
+        if (!socket.hasListeners('message')) {
+            socket.on("message", (message) => {
+                setMessages((prevState) => [...prevState, message]);
+            });
+        }
     }, []);
 
     useEffect(() => {
         const getAllRoomsByUserId = async () => {
-            const response = await ApiService.getAllRoomsByUserId('0');
-            setRooms(response.data);
+            if (userId) {
+                const response = await ApiService.getAllRoomsByUserId(userId);
+                setRooms(response.data);
+            }
         }
+
         getAllRoomsByUserId();
     }, []);
 
     const handleSendMessage = () => {
-        setMessages((prevState) => [...prevState, { userId: 0, roomId: 0, content: message}]);
-        socket.emit('message', { userId: 0, roomId: 0, content: message});
+        setMessages((prevState) => [...prevState, { userId, roomId, content: message}]);
+        socket.emit('message', { userId, roomId, content: message});
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -39,6 +45,8 @@ const MainPage = (): JSX.Element => {
 
     const handleRoomClick = async (roomId: number) => {
         const response = await ApiService.getAllMessageByRoomId(String(roomId));
+        socket.emit("join room", 0);
+        setRoomId(roomId);
         setMessages(response.data);
     }
 

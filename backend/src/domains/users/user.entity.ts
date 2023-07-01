@@ -1,4 +1,6 @@
 // TODO Investigate how this UserEntity works
+import {UserShorterDto} from "./common/types/userShorterDto";
+
 class UserEntity {
     private 'id': number | null;
 
@@ -30,6 +32,13 @@ class UserEntity {
         password: string | null
     }): UserEntity {
       return new UserEntity({ id, email, password });
+    }
+
+    public toShorterObject(): UserShorterDto {
+        return {
+            id: this.id as number,
+            email: this.email as string
+        }
     }
 
     public toObject(): {

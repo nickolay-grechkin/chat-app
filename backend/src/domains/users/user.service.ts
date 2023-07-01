@@ -1,6 +1,7 @@
 import {type UserRepository} from "./user.repository";
 import {UserEntity} from "./user.entity";
-import {UserByEmailResponse} from "./common/types/UserByEmailResponse";
+import {UserByEmailResponse} from "./common/types/userByEmailResponse";
+import {UserShorterDto} from "./common/types/userShorterDto";
 
 class UserService {
     private userRepository: UserRepository;
@@ -21,6 +22,16 @@ class UserService {
         }
 
         return user.toObject();
+    }
+
+    public async findById(id: number): Promise<UserShorterDto | null> {
+        const user = await this.userRepository.findById(id);
+
+        if (!user) {
+            return null;
+        }
+
+        return user.toShorterObject();
     }
 }
 

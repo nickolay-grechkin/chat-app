@@ -1,1 +1,2 @@
-export { UserByEmailResponse } from './UserByEmailResponse';
+export { UserByEmailResponse } from './userByEmailResponse';
+export { UserShorterDto } from './userShorterDto';
