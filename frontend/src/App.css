@@ -75,6 +75,22 @@ textarea {
   width: 100%;
 }
 
-.send-button {
+.login_wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 
+.inputs_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+input {
+  height: 25px;
+  border-radius: 6px;
 }
