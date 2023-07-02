@@ -21,14 +21,17 @@ class ApiService {
 
     public static async getAllRoomsByUserId(userId: string) {
         return axios({
-           method: 'get',
-           url: `${API_ROUTE}/rooms?userId=${userId}`
+            method: 'get',
+            url: `${API_ROUTE}/rooms?userId=${userId}`
         });
     }
 
     public static async getAllMessageByRoomId(roomId: string) {
         return axios({
             method: 'get',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             url: `${API_ROUTE}/message?roomId=${roomId}`
         });
     }

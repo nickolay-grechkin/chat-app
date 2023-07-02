@@ -45,7 +45,8 @@ const MainPage = (): JSX.Element => {
 
     const handleRoomClick = async (roomId: number) => {
         const response = await ApiService.getAllMessageByRoomId(String(roomId));
-        socket.emit("join room", 0);
+        // TODO Replace with roomID
+        socket.emit("join room", '0');
         setRoomId(roomId);
         setMessages(response.data);
     }
@@ -72,8 +73,6 @@ const MainPage = (): JSX.Element => {
                     <button onClick={handleSendMessage} className='send-button'>Send</button>
                 </div>
             </div>
-            {/*<input value={message} onChange={handleChange} />*/}
-            {/*<button onClick={handleSendMessage}>Send</button>*/}
         </div>
     );
 }
