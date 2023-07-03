@@ -14,8 +14,8 @@ class Socket {
             });
             socket.on(SocketEvent.MESSAGE, message => {
                 const { userId, roomId, content } = message;
-                messagesService.saveMessage({ userId, roomId, content });
-                socket.to(String(roomId)).emit(SocketEvent.MESSAGE, message);
+                messagesService.saveMessage({userId, roomId, content});
+                socket.to(String(roomId)).emit(SocketEvent.MESSAGE, message, "error");
             });
         });
     }

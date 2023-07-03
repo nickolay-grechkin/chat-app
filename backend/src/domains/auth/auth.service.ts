@@ -1,9 +1,7 @@
 import {UserService} from "../users/user.service";
-import * as jwt from "jsonwebtoken";
-import {ErrorMessage} from "../../common/enums/enum";
+import {ErrorMessage, HttpStatus} from "../../common/enums/enum";
 import {token} from "../../services/token/token";
-import {UserEntity} from "../users/user.entity";
-import {UserByEmailResponse} from "../users/common/types/userByEmailResponse";
+import {AppError} from "../../services/error/app-error";
 
 class AuthService {
     private userService: UserService;
@@ -21,7 +19,7 @@ class AuthService {
         }
 
         if (password !== user.password) {
-            throw new Error(ErrorMessage.INCORRECT_PASSWORD);
+            throw new AppError(ErrorMessage.INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST, "Password is incorrect", true);
         }
 
         return { token: token.create<{ userId: number }>({userId: user.id}), userId: user.id };

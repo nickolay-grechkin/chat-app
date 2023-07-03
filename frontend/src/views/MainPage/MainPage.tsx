@@ -1,11 +1,7 @@
 import React, {JSX, useEffect, useMemo, useState} from "react";
 import {Message} from "semantic-ui-react";
-import {io} from "socket.io-client";
-import {ApiService} from "../../services/api-service.ts";
-
-const socket = io('ws://localhost:4321', {
-    transports: ['websocket']
-});
+import {ApiService} from "../../services/api.service.ts";
+import {socketService} from "../../services/socket/socket.ts";
 
 const MainPage = (): JSX.Element => {
     const [message, setMessage] = useState<string>();
@@ -16,8 +12,8 @@ const MainPage = (): JSX.Element => {
     const userId = useMemo(() => localStorage.getItem('userId'), []);
 
     useEffect(() => {
-        if (!socket.hasListeners('message')) {
-            socket.on("message", (message) => {
+        if (socketService.hasMessageListeners()) {
+            socketService.receiveMessage((message) => {
                 setMessages((prevState) => [...prevState, message]);
             });
         }
@@ -30,13 +26,14 @@ const MainPage = (): JSX.Element => {
                 setRooms(response.data);
             }
         }
-
         getAllRoomsByUserId();
     }, []);
 
     const handleSendMessage = () => {
-        setMessages((prevState) => [...prevState, { userId, roomId, content: message}]);
-        socket.emit('message', { userId, roomId, content: message});
+        const messageForSending = { userId, roomId, content: message};
+
+        setMessages((prevState) => [...prevState, messageForSending]);
+        socketService.sendMessage(messageForSending)
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,10 +42,9 @@ const MainPage = (): JSX.Element => {
 
     const handleRoomClick = async (roomId: number) => {
         const response = await ApiService.getAllMessageByRoomId(String(roomId));
-        // TODO Replace with roomID
-        socket.emit("join room", '0');
         setRoomId(roomId);
         setMessages(response.data);
+        socketService.joinRoom(roomId);
     }
 
     if (!rooms) {

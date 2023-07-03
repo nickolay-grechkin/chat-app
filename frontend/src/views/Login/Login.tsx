@@ -1,5 +1,5 @@
 import {ChangeEvent, JSX, useState} from 'react';
-import {ApiService} from "../../services/api-service.ts";
+import {ApiService} from "../../services/api.service.ts";
 import {useNavigate} from "react-router-dom";
 
 const Login = (): JSX.Element => {
