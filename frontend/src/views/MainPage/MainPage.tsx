@@ -8,6 +8,7 @@ const MainPage = (): JSX.Element => {
     const [messages, setMessages] = useState<any[]>([]);
     const [rooms, setRooms] = useState<any[]>();
     const [roomId, setRoomId] = useState<number>();
+    const [isInviteModalOpened, setIsInviteModalOpened] = useState(false);
 
     const userId = useMemo(() => localStorage.getItem('userId'), []);
 
@@ -54,6 +55,11 @@ const MainPage = (): JSX.Element => {
     return (
         <div className='wrapper'>
             <div className='sidebar'>
+                <button className='invite_modal_button' onClick={() => setIsInviteModalOpened(prevState => !prevState)} />
+                <dialog open={isInviteModalOpened}>
+                    <div>Email</div>
+                    <button>Find</button>
+                </dialog>
                 {rooms?.map(({ id, lastMessage }) => (
                     <div className='room' key={id} onClick={() => handleRoomClick(id)}>{lastMessage}</div>
                 ))}

@@ -21,7 +21,7 @@ class UserController extends Controller {
         this.addRoute({
             path: AppEndpoint.USER,
             method: HttpMethod.GET,
-            handler: (req, res) => this.findUserById(req, res)
+            handler: (req, res) => this.findUserByEmail(req, res)
         })
     }
 
@@ -29,11 +29,12 @@ class UserController extends Controller {
         res.status(HttpStatus.SUCCESS).send(await this.userService.findAll());
     }
 
-    private async findUserById(req: Request, res: Response) {
-        const { id } = req.query;
+    private async findUserByEmail(req: Request, res: Response) {
+        const { email } = req.query;
 
         try {
-            res.status(HttpStatus.SUCCESS).send(await this.userService.findById(Number(id)));
+            const user = await this.userService.findByEmail(String(email));
+            res.status(HttpStatus.SUCCESS).send(user);
         } catch {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }

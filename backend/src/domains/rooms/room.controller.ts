@@ -17,6 +17,12 @@ class RoomController extends Controller {
             method: HttpMethod.GET,
             handler: (req, res) => this.getAllRoomsByUserId(req, res)
         });
+
+        this.addRoute({
+            path: AppEndpoint.ROOMS,
+            method: HttpMethod.POST,
+            handler: (req, res) => this.createRoom(req, res)
+        });
     }
 
     private async getAllRoomsByUserId(req: Request, res: Response) {
@@ -26,6 +32,18 @@ class RoomController extends Controller {
             const rooms = await this.roomService.getAllRoomsByUserId(Number(userId));
 
             res.status(HttpStatus.SUCCESS).send(rooms);
+        } catch {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private async createRoom(req: Request, res: Response) {
+        try {
+            const room = req.body;
+
+            await this.roomService.createRoom(room);
+
+            res.status(HttpStatus.SUCCESS).send('SUCCESS');
         } catch {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }

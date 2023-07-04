@@ -36,6 +36,15 @@ class ApiService {
         });
     }
 
+    public static async getUSerByEmail(email: string) {
+        return axios({
+           method: 'get',
+           headers: {
+               'Authorization': `Bearer ${localStorage.getItem('token')}`,
+               url: `${API_ROUTE}/user?email=${email}`
+           }
+        });
+    }
 }
 
 export { ApiService };
