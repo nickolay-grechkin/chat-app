@@ -2,6 +2,7 @@ import {RoomRepository} from "./room.repository";
 import {RoomEntity} from "./room.entity";
 import {CreateRoomDTO} from "./common/dtos/createRoomDTO";
 import {RoomToUserRepository} from "../roomToUser/roomToUser.repository";
+import {AppError} from "../../services/error/app-error";
 
 class RoomService {
     private roomRepository: RoomRepository;
@@ -17,8 +18,15 @@ class RoomService {
         return await this.roomRepository.getAllRoomsByUserId(userId);
     }
 
-    public async createRoom(roomDto: CreateRoomDTO): Promise<void> {
+    public async createIndividualRoom(roomDto: CreateRoomDTO): Promise<void> {
         const { inviteeId, inviterId } = roomDto;
+
+        const usersIndividualRoom = await this.roomRepository.getRoomByUsersIds(inviteeId, inviterId);
+
+        if (usersIndividualRoom) {
+            console.log(usersIndividualRoom);
+            throw new Error('Individual room for this users have already exist');
+        }
 
         try {
             const roomId = await this.roomRepository.createRoom();

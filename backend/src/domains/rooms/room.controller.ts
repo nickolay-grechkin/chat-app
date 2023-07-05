@@ -21,7 +21,7 @@ class RoomController extends Controller {
         this.addRoute({
             path: AppEndpoint.ROOMS,
             method: HttpMethod.POST,
-            handler: (req, res) => this.createRoom(req, res)
+            handler: (req, res) => this.createIndividualRoom(req, res)
         });
     }
 
@@ -37,15 +37,15 @@ class RoomController extends Controller {
         }
     }
 
-    private async createRoom(req: Request, res: Response) {
+    private async createIndividualRoom(req: Request, res: Response) {
         try {
             const room = req.body;
 
-            await this.roomService.createRoom(room);
+            await this.roomService.createIndividualRoom(room);
 
             res.status(HttpStatus.SUCCESS).send('SUCCESS');
-        } catch {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (err: any) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err.message);
         }
     }
 }

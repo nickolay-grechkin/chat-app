@@ -9,6 +9,20 @@ class RoomRepository {
         this.roomModel = roomModel;
     }
 
+    public async getIndividualRoomByUserId(userId: number): Promise<RoomEntity | null> {
+        const rooms = await this.roomModel
+            .query()
+            .withGraphJoined('users')
+            .where('user_id', userId)
+            .andWhere('isIndividualRoom', true);
+
+        if (!rooms) {
+            return null;
+        }
+
+        return rooms.map();
+    }
+
     public async getAllRoomsByUserId(userId: number): Promise<RoomEntity[]> {
         const rooms = await this.roomModel
             .query()
