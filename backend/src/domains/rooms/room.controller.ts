@@ -3,6 +3,7 @@ import {RoomService} from "./room.service";
 import {HttpMethod} from "../../common/enums/httpMethod";
 import {Request, Response} from "express";
 import {AppEndpoint, HttpStatus} from "../../common/enums/enum";
+import {ExtendedRequest} from "../../common/types/extended-request";
 
 class RoomController extends Controller {
     private roomService: RoomService;
@@ -41,9 +42,13 @@ class RoomController extends Controller {
         try {
             const room = req.body;
 
-            await this.roomService.createIndividualRoom(room);
+            const roomId = await this.roomService
+                .createIndividualRoom({
+                    ...room,
+                    inviterId: (req as ExtendedRequest).userId
+                });
 
-            res.status(HttpStatus.SUCCESS).send('SUCCESS');
+            res.status(HttpStatus.SUCCESS).send(String(roomId));
         } catch (err: any) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err.message);
         }

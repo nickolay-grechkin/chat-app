@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {ErrorMessage, HttpStatus} from "../../common/enums/enum";
 import { whiteRoutes } from "../../services/server/common/constants/white-routes";
 import { token as tokenPackage } from '../../services/token/token';
+import {ExtendedRequest} from "../../common/types/extended-request";
 
 // TODO Refactor
 const authMiddleware = (req: Request, res: Response, next: any) => {
@@ -26,7 +27,7 @@ const authMiddleware = (req: Request, res: Response, next: any) => {
         if (decodedTokenPayload?.err) {
             res.status(HttpStatus.FORBIDDEN).send(ErrorMessage.FORBIDDEN);
         }
-        (req as any).user = decodedTokenPayload.payload;
+        (req as ExtendedRequest).userId = decodedTokenPayload.payload.userId;
         next();
     } else {
         res.status(HttpStatus.UNAUTHORIZED).send(ErrorMessage.UNAUTHORIZED)

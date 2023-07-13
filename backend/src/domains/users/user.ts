@@ -11,4 +11,4 @@ const userRepository = new UserRepository(UserModel);
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-export { userService, userController };
+export { userService, userController, userRepository };
