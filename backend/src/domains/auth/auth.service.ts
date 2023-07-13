@@ -19,7 +19,7 @@ class AuthService {
         }
 
         if (password !== user.password) {
-            throw new AppError(ErrorMessage.INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST, "Password is incorrect", true);
+            throw new AppError(ErrorMessage.INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST, true);
         }
 
         return { token: token.create<{ userId: number }>({userId: user.id}), userId: user.id };

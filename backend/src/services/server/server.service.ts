@@ -1,4 +1,4 @@
-import express, { Response, Request, Express } from "express";
+import express, {Response, Request, Express, NextFunction} from "express";
 import { IDatabase } from "../../configs/database/database";
 import { RouteParameters } from "../../common/interfaces/routeParameters";
 import { HttpMethod } from "../../common/enums/httpMethod";
@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 import * as http from 'http';
 import { Socket } from "../socket/socket.service";
 import cors from 'cors';
+import {errorHandlerMiddleware} from "../../middlewares/authMiddleware/error-handler.middleware";
 
 const router = express.Router();
 
@@ -26,14 +27,16 @@ class ServerService {
         this.server = http.createServer(this.app);
     }
 
-    private addRoute = (parameters: { path: string, method: HttpMethod, handler: (req: Request, res: Response) => void }) => {
+    private addRoute = (parameters: { path: string, method: HttpMethod, handler: (req: Request, res: Response, next: any) => void }) => {
         const { path, method, handler } = parameters;
 
         router[method](path, handler);
     }
 
     private initRoutes(): void {
-        this.api.map(it => this.addRoute(it));
+        this.api.map(it => {
+            this.addRoute(it)
+        });
         this.app.use(router);
     }
 
@@ -52,6 +55,7 @@ class ServerService {
         this.database.connect();
         this.initMiddlewares();
         this.initRoutes();
+        this.app.use(errorHandlerMiddleware);
         this.initSocket();
 
         this.server.listen(process.env.APP_PORT,() => {

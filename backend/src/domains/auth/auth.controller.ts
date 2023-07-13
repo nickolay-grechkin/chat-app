@@ -1,7 +1,7 @@
 import { Controller } from "../common/classes/classes";
 import { AppEndpoint, HttpMethod, HttpStatus } from "../../common/enums/enum";
 import { AuthService } from "./auth.service";
-import {Request, Response} from "express";
+import {NextFunction, Request, Response} from "express";
 
 
 class AuthController extends Controller {
@@ -16,19 +16,18 @@ class AuthController extends Controller {
         this.addRoute({
             path: AppEndpoint.LOGIN,
             method: HttpMethod.POST,
-            handler: (req, res) => this.login(req, res)
+            handler: (req, res, next) => this.login(req, res, next)
         });
     }
 
-    private async login(req: Request, res: Response) {
+    private async login(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, password } = req.body;
             const loginResponse = await this.authService.login(email, password);
 
             res.status(HttpStatus.SUCCESS).send(loginResponse);
-        } catch (err: any) {
-            // TODO Implement proper error handling
-            res.status(HttpStatus.FORBIDDEN).send(err.message);
+        } catch (error) {
+            next(error);
         }
     }
 }

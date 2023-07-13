@@ -1,6 +1,6 @@
 import {Controller} from "../common/classes/classes";
 import {AppEndpoint, HttpMethod, HttpStatus} from "../../common/enums/enum";
-import {Request, Response} from "express";
+import {NextFunction, Request, Response} from "express";
 import {MessageService} from "./message.service";
 
 class MessagesController extends Controller{
@@ -12,35 +12,32 @@ class MessagesController extends Controller{
         this.addRoute({
            path: AppEndpoint.MESSAGE,
            method: HttpMethod.POST,
-           handler: (req, res) => this.saveMessage(req, res)
+           handler: (req, res, next) => this.saveMessage(req, res, next)
         });
 
         this.addRoute({
             path: AppEndpoint.MESSAGE,
             method: HttpMethod.GET,
-            handler: (req, res) => this.getMessagesByRoomId(req, res)
+            handler: (req, res, next) => this.getMessagesByRoomId(req, res, next)
         })
     }
 
-    private async saveMessage(req: Request, res: Response) {
+    private async saveMessage(req: Request, res: Response, next: NextFunction) {
         try {
             await this.messagesService.saveMessage(req.body);
             res.status(HttpStatus.SUCCESS).send();
         } catch (error) {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            next(error)
         }
     }
 
-    private async getMessagesByRoomId(req: Request, res: Response) {
+    private async getMessagesByRoomId(req: Request, res: Response, next: NextFunction) {
         try {
             const { roomId } = req.query;
-            if (!roomId) {
-                throw Error("Dialog id query parameter is missing");
-            }
 
             res.status(HttpStatus.SUCCESS).send(await this.messagesService.getMessagesByRoomId(Number(roomId)));
-        } catch (err) {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (error) {
+            next(error);
         }
     }
 }

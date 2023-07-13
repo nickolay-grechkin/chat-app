@@ -4,6 +4,8 @@ import {CreateRoomDTO} from "./common/dtos/createRoomDTO";
 import {RoomToUserRepository} from "../roomToUser/roomToUser.repository";
 import {UserRepository} from "../users/user.repository";
 import {createRoomToUserEntities} from "./utils/utils";
+import {AppError} from "../../services/error/app-error";
+import {HttpStatus} from "../../common/enums/httpStatus";
 
 class RoomService {
     private roomRepository: RoomRepository;
@@ -30,7 +32,7 @@ class RoomService {
         const isInviteeExist = await this.userRepository.findById(inviteeId) !== null;
 
         if (!isInviteeExist) {
-            throw new Error('Invitee doesnt exist');
+            throw new AppError('Invitee doesnt exist.', HttpStatus.NOT_FOUND, true);
         }
 
         const inviterRooms = await this.roomRepository.getIndividualRoomIdsByUserId(inviterId);
@@ -39,13 +41,17 @@ class RoomService {
         const isShareSameIndividualRoom = inviterRooms?.some(roomId => inviteeRooms?.includes(roomId));
 
         if (isShareSameIndividualRoom) {
-            throw new Error('Individual room for this users have already exist');
+            throw new AppError(
+                'Individual room for this users have already exist.',
+                HttpStatus.BAD_REQUEST,
+                true
+            );
         }
 
         const roomId = await this.roomRepository.createIndividualRoom();
 
         if (!roomId) {
-            throw new Error('Room creation failed.');
+            throw new AppError('Room creation failed.', HttpStatus.INTERNAL_SERVER_ERROR, true);
         }
 
         const entitiesToInsert = createRoomToUserEntities(roomId, [inviterId, inviteeId]);

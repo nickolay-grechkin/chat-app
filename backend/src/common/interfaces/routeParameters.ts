@@ -5,7 +5,7 @@ import {QueryArguments} from "../types/query-arguments";
 interface RouteParameters {
     path: string;
     method: HttpMethod;
-    handler: (req: Request, res: Response) => void;
+    handler: (req: Request, res: Response, next: any) => void;
 }
 
 export { RouteParameters };
