@@ -13,7 +13,7 @@ enum ColumnName {
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(Table.USERS, (tableBuilder) => {
        tableBuilder.increments(ColumnName.ID).primary();
-       tableBuilder.string(ColumnName.EMAIL).notNullable();
+       tableBuilder.string(ColumnName.EMAIL).notNullable().unique();
        tableBuilder.string(ColumnName.PASSWORD).notNullable();
        tableBuilder.string(ColumnName.PICTURE);
        tableBuilder.dateTime(ColumnName.CREATED_AT).notNullable().defaultTo(knex.fn.now());

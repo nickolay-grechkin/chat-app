@@ -23,7 +23,7 @@ class Database implements IDatabase{
             connection: {
                 host: 'localhost',
                 user: 'postgres',
-                password: 'admin',
+                password: 'postgres',
                 database: 'chatapp',
             },
             migrations: {

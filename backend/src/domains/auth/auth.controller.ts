@@ -1,7 +1,8 @@
-import { Controller } from "../common/classes/classes";
-import { AppEndpoint, HttpMethod, HttpStatus } from "../../common/enums/enum";
-import { AuthService } from "./auth.service";
+import {Controller} from "../common/classes/classes";
+import {AppEndpoint, HttpMethod, HttpStatus} from "../../common/enums/enum";
+import {AuthService} from "./auth.service";
 import {NextFunction, Request, Response} from "express";
+import {AppError} from "../../services/error/app-error";
 
 
 class AuthController extends Controller {
@@ -26,8 +27,8 @@ class AuthController extends Controller {
             const loginResponse = await this.authService.login(email, password);
 
             res.status(HttpStatus.SUCCESS).send(loginResponse);
-        } catch (error) {
-            next(error);
+        } catch (error: any) {
+            next(new AppError(error.message, HttpStatus.INTERNAL_SERVER_ERROR, false));
         }
     }
 }

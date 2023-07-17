@@ -1,5 +1,6 @@
 import {UserModel} from "./user.model";
 import {UserEntity} from "./user.entity";
+import {CreateUserDto} from "./common/types/createUserDto";
 
 class UserRepository {
     private userModel: typeof UserModel;
@@ -51,6 +52,20 @@ class UserRepository {
             id: user.id,
             email: user.email,
             password: user.password
+        });
+    }
+
+    public async create(userData: CreateUserDto): Promise<UserEntity | null> {
+        const { email, password } = userData;
+
+        const user = await this.userModel
+            .query()
+            .insertAndFetch({ email, password });
+
+        return UserEntity.initialize({
+            id: null,
+            email: user.email,
+            password: password
         });
     }
 }

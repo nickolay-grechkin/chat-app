@@ -23,6 +23,12 @@ class UserController extends Controller {
             method: HttpMethod.GET,
             handler: (req, res, next) => this.findUserByEmail(req, res, next)
         })
+
+        this.addRoute({
+            path: AppEndpoint.USER,
+            method: HttpMethod.POST,
+            handler: (req, res, next) => this.create(req, res, next)
+        })
     }
 
     private async findAll(res: Response) {
@@ -36,6 +42,17 @@ class UserController extends Controller {
             const user = await this.userService.findByEmail(String(email));
             res.status(HttpStatus.SUCCESS).send(user);
         } catch(error) {
+            next(error);
+        }
+    }
+
+    public async create(req: Request, res: Response, next: NextFunction) {
+        const { email, password } = req.body;
+
+        try {
+            const user = await this.userService.create({ email, password });
+            res.status(HttpStatus.SUCCESS).send(user);
+        } catch (error) {
             next(error);
         }
     }
