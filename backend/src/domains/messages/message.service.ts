@@ -3,19 +3,18 @@ import {SaveMessageDto} from "./common/types/save-message-dto";
 import {MessageEntity} from "./message.entity";
 
 class MessageService {
-    // TODO Why message repository as a type works here
     private messageRepository: MessageRepository;
 
     public constructor(messageRepository: MessageRepository) {
         this.messageRepository = messageRepository;
     }
 
-    public async saveMessage(message: SaveMessageDto) {
-        return this.messageRepository.createMessage(message);
+    public async createMessage(message: SaveMessageDto) {
+        return this.messageRepository.create(message);
     }
 
-    public async getAllMessages(): Promise<void> {
-        this.messageRepository.getAllMessages();
+    public async getAllMessages(): Promise<MessageEntity[]> {
+        return this.messageRepository.getAll();
     }
 
     public async getMessagesByRoomId(roomId: number): Promise<MessageEntity[] | null> {

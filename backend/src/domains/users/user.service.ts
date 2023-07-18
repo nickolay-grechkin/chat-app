@@ -52,7 +52,7 @@ class UserService {
                     resolve(hash);
                 });
             });
-            return  this.userRepository.create({ ...userData, password: hashedPassword })
+            return  this.userRepository.create({ ...userData, password: hashedPassword });
         } catch (error: any) {
             throw new AppError(error.message, HttpStatus.INTERNAL_SERVER_ERROR, false);
         }
