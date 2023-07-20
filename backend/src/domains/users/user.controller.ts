@@ -3,6 +3,7 @@ import {HttpMethod} from "../../common/enums/httpMethod";
 import {AppEndpoint, HttpStatus} from "../../common/enums/enum";
 import {Controller} from "../common/classes/classes";
 import {NextFunction, Request, Response} from "express";
+import {uploadFile} from "../../services/file/fileParser";
 
 class UserController extends Controller {
     private userService: UserService;
@@ -50,8 +51,9 @@ class UserController extends Controller {
         const { email, password } = req.body;
 
         try {
-            const user = await this.userService.create({ email, password });
-            res.status(HttpStatus.SUCCESS).send(user);
+            // const user = await this.userService.create({ email, password });
+            await uploadFile();
+            res.status(HttpStatus.SUCCESS).send("Success");
         } catch (error) {
             next(error);
         }
