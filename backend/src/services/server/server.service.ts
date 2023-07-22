@@ -8,8 +8,12 @@ import * as http from 'http';
 import { Socket } from "../socket/socket.service";
 import cors from 'cors';
 import {errorHandlerMiddleware} from "../../middlewares/authMiddleware/error-handler.middleware";
+import multer from 'multer';
+import {uploadFile} from "../file/fileParser";
 
 const router = express.Router();
+
+const upload = multer();
 
 class ServerService {
     private readonly app: Express;
@@ -31,6 +35,13 @@ class ServerService {
         const { path, method, handler } = parameters;
 
         router[method](path, handler);
+
+        router.post("/file/upload",  upload.single('avatar'), async (req, res) => {
+           const url = await uploadFile(req.file?.originalname, req.file?.buffer, req.file?.mimetype);
+
+           res.status(200).send(url);
+        });
+
     }
 
     private initRoutes(): void {
