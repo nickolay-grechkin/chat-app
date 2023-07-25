@@ -3,7 +3,9 @@ import {HttpMethod} from "../../common/enums/httpMethod";
 import {AppEndpoint, HttpStatus} from "../../common/enums/enum";
 import {Controller} from "../common/classes/classes";
 import {NextFunction, Request, Response} from "express";
-import {uploadFile} from "../../services/file/fileParser";
+import multer from 'multer';
+
+const upload = multer();
 
 class UserController extends Controller {
     private userService: UserService;
@@ -23,12 +25,19 @@ class UserController extends Controller {
             path: AppEndpoint.USER,
             method: HttpMethod.GET,
             handler: (req, res, next) => this.findUserByEmail(req, res, next)
-        })
+        });
 
         this.addRoute({
             path: AppEndpoint.USER,
             method: HttpMethod.POST,
             handler: (req, res, next) => this.create(req, res, next)
+        });
+
+        this.addRoute({
+            path: AppEndpoint.AVATAR,
+            method: HttpMethod.POST,
+            middleware: upload.any(),
+            handler: (req, res, next) => this.uploadAvatar(req, res, next)
         })
     }
 
@@ -51,9 +60,25 @@ class UserController extends Controller {
         const { email, password } = req.body;
         try {
             const user = await this.userService.create({ email, password });
-            res.status(HttpStatus.SUCCESS).send("Success");
+            res.status(HttpStatus.SUCCESS).send(user);
         } catch (error) {
             next(error);
+        }
+    }
+
+    public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (req.files && req.query.userId) {
+                // @ts-ignore
+                const [ file ] = req.files;
+
+                const avatarLink = await this.userService.uploadAvatar(Number(req.query.userId), file);
+                res.status(HttpStatus.SUCCESS).send(avatarLink)
+            }
+
+            res.status(HttpStatus.BAD_REQUEST).send("File for upload is missing")
+        } catch (error) {
+            next(error)
         }
     }
 }

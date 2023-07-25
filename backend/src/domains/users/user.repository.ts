@@ -68,6 +68,13 @@ class UserRepository {
             password: password
         });
     }
+
+    public async uploadAvatar(userId: number, avatarLink: string): Promise<void> {
+         await  this.userModel
+            .query()
+            .where({ id: userId })
+            .update({ picture: avatarLink });
+    }
 }
 
 export { UserRepository };
