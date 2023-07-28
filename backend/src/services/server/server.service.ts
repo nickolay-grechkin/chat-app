@@ -1,4 +1,4 @@
-import express, {Response, Request, Express, NextFunction, RequestHandler} from "express";
+import express, {Express, RequestHandler} from "express";
 import { IDatabase } from "../../configs/database/database";
 import { RouteParameters } from "../../common/interfaces/routeParameters";
 import { HttpMethod } from "../../common/enums/httpMethod";
@@ -38,11 +38,6 @@ class ServerService {
             return;
         }
         router[method](path, handler);
-        /*router.post("/file/upload", async (req, res) => {
-           // const url = await uploadFile(req.file?.originalname, req.file?.buffer, req.file?.mimetype);
-            console.log(req.files);
-            res.status(200).send("Success");
-        });*/
     }
 
     private initRoutes(): void {

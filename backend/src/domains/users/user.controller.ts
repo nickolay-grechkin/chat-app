@@ -4,6 +4,7 @@ import {AppEndpoint, HttpStatus} from "../../common/enums/enum";
 import {Controller} from "../common/classes/classes";
 import {NextFunction, Request, Response} from "express";
 import multer from 'multer';
+import {MulterFile} from "../../common/types/multer-file";
 
 const upload = multer();
 
@@ -69,8 +70,8 @@ class UserController extends Controller {
     public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
         try {
             if (req.files && req.query.userId) {
-                // @ts-ignore
-                const [ file ] = req.files;
+
+                const [ file ] = req.files as MulterFile[];
 
                 const avatarLink = await this.userService.uploadAvatar(Number(req.query.userId), file);
                 res.status(HttpStatus.SUCCESS).send(avatarLink)

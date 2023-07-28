@@ -2,6 +2,7 @@ import {UserService} from "../users/user.service";
 import {ErrorMessage, HttpStatus} from "../../common/enums/enum";
 import {token} from "../../services/token/token";
 import {AppError} from "../../services/error/app-error";
+import * as bcrypt from 'bcrypt';
 
 class AuthService {
     private userService: UserService;
@@ -14,11 +15,13 @@ class AuthService {
     public login = async (email: string, password: string): Promise<{ token: string, userId: number } | null> => {
         const user = await this.userService.findByEmail(email);
 
-        if (!user) {
+        if (!user?.password) {
             return null;
         }
 
-        if (password !== user.password) {
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordCorrect) {
             throw new AppError(ErrorMessage.INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST, true);
         }
 

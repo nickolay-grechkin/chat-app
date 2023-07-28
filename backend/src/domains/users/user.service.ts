@@ -6,7 +6,8 @@ import {CreateUserDto} from "./common/types/createUserDto";
 import * as bcrypt from 'bcrypt';
 import {AppError} from "../../services/error/app-error";
 import {HttpStatus} from "../../common/enums/httpStatus";
-import {uploadFile} from "../../services/file/fileParser";
+import {MulterFile} from "../../common/types/multer-file";
+import {s3Client} from "../../services/s3/s3";
 
 class UserService {
     private userRepository: UserRepository;
@@ -60,8 +61,8 @@ class UserService {
 
     }
 
-    public async uploadAvatar(userId: number, file: any): Promise<string> {
-        const avatarLink = await uploadFile(file.originalname, file.buffer, file.mimetype);
+    public async uploadAvatar(userId: number, file: MulterFile): Promise<string> {
+        const avatarLink = await s3Client.uploadFile(file);
 
         await this.userRepository.uploadAvatar(userId, avatarLink);
 
