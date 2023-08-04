@@ -1,1 +1,1 @@
-export { CreateRoomDTO } from './createRoomDTO';
+export type {CreateRoomDTO} from './createRoomDTO';

@@ -1,3 +1,3 @@
-export { QueryArguments } from "./query-arguments";
-export { ExtendedRequest } from "./extended-request";
-export { MulterFile } from "./multer-file";
+export type {QueryArguments} from './query-arguments';
+export type {ExtendedRequest} from './extended-request';
+export type {MulterFile} from './multer-file';

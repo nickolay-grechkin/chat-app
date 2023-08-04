@@ -1,1 +1,1 @@
-export { IToken } from './token';
+export type {IToken} from './token';

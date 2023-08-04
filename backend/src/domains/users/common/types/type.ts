@@ -1,3 +1,3 @@
-export { UserByEmailResponse } from './userByEmailResponse';
-export { UserShorterDto } from './userShorterDto';
-export { CreateUserDto } from './createUserDto';
+export type {UserByEmailResponse} from './userByEmailResponse';
+export type {UserShorterDto} from './userShorterDto';
+export type {CreateUserDto} from './createUserDto';
