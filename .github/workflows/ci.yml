@@ -9,6 +9,9 @@ on:
 #  group: ci-${{ github.ref }}
 #  cancel-in-progress: true
 
+env: # environment variables (available in any part of the action)
+  NODE_VERSION: 16
+
 jobs:
   linting:
     name: Linting
@@ -18,7 +21,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: .nvmrc
+          node-version: ${{ env.NODE_VERSION }}
       - name: Code checkout
         uses: actions/checkout@v2
 
