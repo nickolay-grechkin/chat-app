@@ -28,4 +28,4 @@ jobs:
 
       - name: Code Linting
         run: |
-          npx npm lint
+          npx npm run lint
