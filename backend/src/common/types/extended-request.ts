@@ -1,5 +1,5 @@
-import {Request} from "express";
+import {type Request} from 'express';
 
 export type ExtendedRequest = Request & {
-    userId: number;
-}
+	userId: number;
+};

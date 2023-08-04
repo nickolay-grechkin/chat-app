@@ -1,1 +1,1 @@
-export { WhiteRoute } from './whiteRoute';
+export type {WhiteRoute} from './whiteRoute';

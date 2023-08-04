@@ -1,9 +1,9 @@
 class BaseEntity {
-    public 'id': number | null;
+	public 'id': number | undefined;
 
-    public 'createdAt': string | null;
+	public 'createdAt': string | undefined;
 
-    public 'updatedAt': string | null;
+	public 'updatedAt': string | undefined;
 }
 
-export { BaseEntity };
+export {BaseEntity};

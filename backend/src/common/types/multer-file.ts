@@ -1,7 +1,7 @@
 type MulterFile = {
-    originalname: string;
-    mimetype: string;
-    buffer: Buffer;
-}
+	originalname: string;
+	mimetype: string;
+	buffer: Buffer;
+};
 
-export { MulterFile };
+export type {MulterFile};

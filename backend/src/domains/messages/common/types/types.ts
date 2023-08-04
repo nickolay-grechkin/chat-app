@@ -1,1 +1,1 @@
-export { SaveMessageDto } from "./save-message-dto";
+export type {SaveMessageDto} from './save-message-dto';

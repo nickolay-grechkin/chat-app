@@ -1,8 +1,8 @@
-import { Response, Request } from 'express';
+import {type Response, type Request} from 'express';
 
 type QueryArguments = {
-    req: Request;
-    res: Response;
-}
+	req: Request;
+	res: Response;
+};
 
-export { QueryArguments };
+export type {QueryArguments};

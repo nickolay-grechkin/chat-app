@@ -1,1 +1,1 @@
-export { type IDatabase } from './database.interface';
+export {type IDatabase} from './database.interface';

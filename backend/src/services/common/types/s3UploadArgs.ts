@@ -1,7 +1,7 @@
 type S3UploadArgs = {
-    fileName?: string;
-    buffer?: any;
-    mimetype?: string;
-}
+	fileName?: string;
+	buffer?: any;
+	mimetype?: string;
+};
 
-export { S3UploadArgs };
+export type {S3UploadArgs};

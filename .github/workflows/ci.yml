@@ -1,0 +1,32 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+#concurrency:
+#  group: ci-${{ github.ref }}
+#  cancel-in-progress: true
+
+env: # environment variables (available in any part of the action)
+  NODE_VERSION: 16
+
+jobs:
+  linting:
+    name: Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Code linting
+        run: npm run lint

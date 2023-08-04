@@ -1,13 +1,13 @@
-import express, {Express, RequestHandler} from "express";
-import { IDatabase } from "../../configs/database/database";
-import { RouteParameters } from "../../common/interfaces/routeParameters";
-import { HttpMethod } from "../../common/enums/httpMethod";
-import { authMiddleware } from "../../middlewares/authMiddleware/authMiddleware";
+import express, {type Express, type RequestHandler} from 'express';
+import {type IDatabase} from '../../configs/database/database';
+import {type RouteParameters} from '../../common/interfaces/routeParameters';
+import {type HttpMethod} from '../../common/enums/httpMethod';
+import {authMiddleware} from '../../middlewares/authMiddleware/authMiddleware';
 import * as dotenv from 'dotenv';
 import * as http from 'http';
-import { Socket } from "../socket/socket.service";
+import {Socket} from '../socket/socket.service';
 import cors from 'cors';
-import {errorHandlerMiddleware} from "../../middlewares/authMiddleware/error-handler.middleware";
+import {errorHandlerMiddleware} from '../../middlewares/authMiddleware/error-handler.middleware';
 import multer from 'multer';
 
 const router = express.Router();
@@ -15,61 +15,62 @@ const router = express.Router();
 const upload = multer();
 
 class ServerService {
-    private readonly app: Express;
+	private readonly app: Express;
 
-    private database: IDatabase;
+	private readonly database: IDatabase;
 
-    private api: RouteParameters[];
+	private readonly api: RouteParameters[];
 
-    private readonly server: http.Server;
+	private readonly server: http.Server;
 
-    public constructor(database: IDatabase, api: RouteParameters[]) {
-        this.app = express();
-        this.database = database;
-        this.api = api;
-        this.server = http.createServer(this.app);
-    }
+	public constructor(database: IDatabase, api: RouteParameters[]) {
+		this.app = express();
+		this.database = database;
+		this.api = api;
+		this.server = http.createServer(this.app);
+	}
 
-    private addRoute = (parameters: { path: string, method: HttpMethod, middleware?: RequestHandler, handler: RequestHandler }) => {
-        const { path, method, middleware, handler } = parameters;
+	private readonly addRoute = (parameters: {path: string; method: HttpMethod; middleware?: RequestHandler; handler: RequestHandler}) => {
+		const {path, method, middleware, handler} = parameters;
 
-        if (middleware) {
-            router[method](path, middleware, handler);
-            return;
-        }
-        router[method](path, handler);
-    }
+		if (middleware) {
+			router[method](path, middleware, handler);
+			return;
+		}
 
-    private initRoutes(): void {
-        this.api.map(it => {
-            this.addRoute(it)
-        });
-        this.app.use(router);
-    }
+		router[method](path, handler);
+	};
 
-    private initMiddlewares(): void {
-        this.app.use(cors());
-        this.app.use(authMiddleware);
-        this.app.use(express.json());
-        this.app.use(upload.any());
-    }
+	private initRoutes(): void {
+		this.api.map(it => {
+			this.addRoute(it);
+		});
+		this.app.use(router);
+	}
 
-    private initSocket(): void {
-        Socket.init(this.server);
-    }
+	private initMiddlewares(): void {
+		this.app.use(cors());
+		this.app.use(authMiddleware);
+		this.app.use(express.json());
+		this.app.use(upload.any());
+	}
 
-    public async init(): Promise<void> {
-        dotenv.config();
-        this.database.connect();
-        this.initMiddlewares();
-        this.initRoutes();
-        this.app.use(errorHandlerMiddleware);
-        this.initSocket();
+	private initSocket(): void {
+		Socket.init(this.server);
+	}
 
-        this.server.listen(process.env.APP_PORT,() => {
-            console.log("Listening on " + process.env.APP_PORT);
-        });
-    }
+	public async init(): Promise<void> {
+		dotenv.config();
+		this.database.connect();
+		this.initMiddlewares();
+		this.initRoutes();
+		this.app.use(errorHandlerMiddleware);
+		this.initSocket();
+
+		this.server.listen(process.env.APP_PORT, () => {
+			console.log('Listening on ' + process.env.APP_PORT);
+		});
+	}
 }
 
-export { ServerService };
+export {ServerService};

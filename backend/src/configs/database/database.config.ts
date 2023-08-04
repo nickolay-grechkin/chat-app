@@ -1,56 +1,42 @@
-import { Model } from "objection";
-import Knex from "knex";
-import { IDatabase } from "../../services/common/interfaces/database.interface";
-import { Client } from "pg";
-import * as mysql from "mysql";
+import {Model} from 'objection';
+import Knex from 'knex';
+import {type IDatabase} from '../../services/common/interfaces/database.interface';
 
-class Database implements IDatabase{
-    public connect (): ReturnType<IDatabase['connect']> {
-        var connection = mysql.createConnection({
-            host     : 'chat-app-2.cig7pnqjpyrm.us-east-1.rds.amazonaws.com',
-            user     : 'admin',
-            password : 'chat-app'
-        });
+class Database implements IDatabase {
+	public async connect(): Promise<ReturnType<IDatabase['connect']>> {
+		Model.knex(Knex(this.initialConfig()));
+	}
 
-        connection.connect();
+	public initialConfig() {
+		const {
+			CLIENT,
+			MIGRATIONS_TABLE_NAME,
+			HOST,
+			USER,
+			PASSWORD,
+			MIGRATIONS_DIRECTORY,
+			DB_PORT,
+		} = process.env;
 
-        connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-            if (error) throw error;
-            console.log('The solution is: ', results[0].solution);
-        });
-        
-        // Model.knex(Knex(this.initialConfig()));
-    }
-
-    public initialConfig() {
-        const {
-            CLIENT,
-            DATABASE,
-            MIGRATIONS_TABLE_NAME,
-            HOST,
-            USER,
-            PASSWORD,
-            MIGRATIONS_DIRECTORY
-        } = process.env;
-
-        return {
-            client: 'pg',
-            connection: {
-                host: 'chat-app.cig7pnqjpyrm.us-east-1.rds.amazonaws.com',
-                user: 'postgres',
-                password: 'postgres',
-                port: '5432',
-                database: 'chat-app'
-            },
-            migrations: {
-                directory: 'src/db/migrations',
-                tableName: 'migrations'
-            }
-        };
-    }
-
+		return {
+			client: CLIENT,
+			connection: {
+				host: HOST,
+				user: USER,
+				password: PASSWORD,
+				port: Number(DB_PORT),
+				ssl: {
+					rejectUnauthorized: false,
+				},
+			},
+			migrations: {
+				directory: MIGRATIONS_DIRECTORY,
+				tableName: MIGRATIONS_TABLE_NAME,
+			},
+		};
+	}
 }
 
-export { Database };
-export { type IDatabase };
+export {Database};
+export {type IDatabase};
 

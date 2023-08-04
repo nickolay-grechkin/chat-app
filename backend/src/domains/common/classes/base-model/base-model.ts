@@ -1,1 +1,1 @@
-export { BaseModel } from './base-model.class';
+export {BaseModel} from './base-model.class';
