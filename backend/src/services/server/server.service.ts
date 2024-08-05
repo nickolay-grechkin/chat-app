@@ -1,4 +1,4 @@
-import express, {Response, Request, Express, NextFunction, RequestHandler} from "express";
+import express, {Response, Request, Express, NextFunction} from "express";
 import { IDatabase } from "../../configs/database/database";
 import { RouteParameters } from "../../common/interfaces/routeParameters";
 import { HttpMethod } from "../../common/enums/httpMethod";
@@ -9,6 +9,7 @@ import { Socket } from "../socket/socket.service";
 import cors from 'cors';
 import {errorHandlerMiddleware} from "../../middlewares/authMiddleware/error-handler.middleware";
 import multer from 'multer';
+import {uploadFile} from "../file/fileParser";
 
 const router = express.Router();
 
@@ -30,19 +31,17 @@ class ServerService {
         this.server = http.createServer(this.app);
     }
 
-    private addRoute = (parameters: { path: string, method: HttpMethod, middleware?: RequestHandler, handler: RequestHandler }) => {
-        const { path, method, middleware, handler } = parameters;
+    private addRoute = (parameters: { path: string, method: HttpMethod, handler: (req: Request, res: Response, next: any) => void }) => {
+        const { path, method, handler } = parameters;
 
-        if (middleware) {
-            router[method](path, middleware, handler);
-            return;
-        }
         router[method](path, handler);
-        /*router.post("/file/upload", async (req, res) => {
-           // const url = await uploadFile(req.file?.originalname, req.file?.buffer, req.file?.mimetype);
-            console.log(req.files);
-            res.status(200).send("Success");
-        });*/
+
+        router.post("/file/upload",  upload.single('avatar'), async (req, res) => {
+           const url = await uploadFile(req.file?.originalname, req.file?.buffer, req.file?.mimetype);
+
+           res.status(200).send(url);
+        });
+
     }
 
     private initRoutes(): void {
@@ -56,7 +55,6 @@ class ServerService {
         this.app.use(cors());
         this.app.use(authMiddleware);
         this.app.use(express.json());
-        this.app.use(upload.any());
     }
 
     private initSocket(): void {

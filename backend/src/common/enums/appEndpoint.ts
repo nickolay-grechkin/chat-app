@@ -3,8 +3,7 @@ enum AppEndpoint {
     LOGIN = '/login',
     MESSAGE = '/message',
     ROOMS = '/rooms',
-    USER = '/user',
-    AVATAR = '/user/avatar'
+    USER = '/user'
 }
 
 export { AppEndpoint };

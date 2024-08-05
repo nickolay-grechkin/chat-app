@@ -6,7 +6,6 @@ const REGION = "eu-central-1";
 const client = new S3Client({ region: REGION });
 
 export const uploadFile = async (fileName?: string, buffer?: any, mimetype?: string) => {
-    console.log(`${fileName} ${buffer} ${mimetype}`);
     const command = new PutObjectCommand({
         Bucket: "chat-app-999",
         Key: fileName,
