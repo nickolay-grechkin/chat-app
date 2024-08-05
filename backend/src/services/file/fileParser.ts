@@ -1,16 +1,16 @@
-import {GetObjectCommand, PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import AWS from "aws-sdk";
+
+import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
 
 const REGION = "eu-central-1";
 
 const client = new S3Client({ region: REGION });
 
-export const uploadFile = async (fileName?: string, buffer?: any, mimetype?: string) => {
+export const uploadFile = async () => {
     const command = new PutObjectCommand({
-        Bucket: "chat-app-999",
-        Key: fileName,
-        Body: buffer,
-        ContentType: mimetype
+        Bucket: "chat-app-bucket-333",
+        Key: "hello-s3.txt",
+        Body: "Hello S3!",
     });
 
     try {
@@ -19,6 +19,4 @@ export const uploadFile = async (fileName?: string, buffer?: any, mimetype?: str
     } catch (err) {
         console.error(err);
     }
-
-    return await getSignedUrl(client, new GetObjectCommand({Bucket: "chat-app-999", Key: fileName}));
 }

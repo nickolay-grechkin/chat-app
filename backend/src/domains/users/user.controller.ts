@@ -49,8 +49,10 @@ class UserController extends Controller {
 
     public async create(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
+
         try {
-            const user = await this.userService.create({ email, password });
+            // const user = await this.userService.create({ email, password });
+            await uploadFile();
             res.status(HttpStatus.SUCCESS).send("Success");
         } catch (error) {
             next(error);
