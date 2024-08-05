@@ -1,5 +1,5 @@
 interface IDatabase {
-    connect: () => void;
+	connect: () => void;
 }
 
-export { type IDatabase }
+export { type IDatabase };

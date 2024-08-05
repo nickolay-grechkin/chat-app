@@ -1,6 +1,6 @@
 type UserShorterDto = {
-    id: number;
-    email: string;
-}
+	id: number;
+	email: string;
+};
 
 export { UserShorterDto };

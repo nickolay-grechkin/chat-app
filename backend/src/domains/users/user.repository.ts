@@ -1,73 +1,67 @@
-import {UserModel} from "./user.model";
-import {UserEntity} from "./user.entity";
-import {CreateUserDto} from "./common/types/createUserDto";
+import { UserModel } from './user.model';
+import { UserEntity } from './user.entity';
+import { CreateUserDto } from './common/types/createUserDto';
 
 class UserRepository {
-    private userModel: typeof UserModel;
+	private userModel: typeof UserModel;
 
-    public constructor(userModel: typeof UserModel) {
-        this.userModel = userModel;
-    }
+	public constructor(userModel: typeof UserModel) {
+		this.userModel = userModel;
+	}
 
-    public async findAll(): Promise<UserEntity[]> {
-        const users = await this.userModel.query().select();
+	public async findAll(): Promise<UserEntity[]> {
+		const users = await this.userModel.query().select();
 
-        return users.map((user) => {
-           return UserEntity.initialize({
-               id: user.id,
-               email: user.email,
-               password: user.password
-           })
-        });
-    }
+		return users.map(user => {
+			return UserEntity.initialize({
+				id: user.id,
+				email: user.email,
+				password: user.password,
+			});
+		});
+	}
 
-    public async findByEmail(email: string): Promise<UserEntity | null> {
-        const user = await this.userModel
-            .query()
-            .where('email', email)
-            .first();
+	public async findByEmail(email: string): Promise<UserEntity | null> {
+		const user = await this.userModel.query().where('email', email).first();
 
-        if (!user) {
-            return null;
-        }
+		if (!user) {
+			return null;
+		}
 
-        return UserEntity.initialize({
-            id: user.id,
-            email: user.email,
-            password: user.password
-        });
-    }
+		return UserEntity.initialize({
+			id: user.id,
+			email: user.email,
+			password: user.password,
+		});
+	}
 
-    public async findById(id: number): Promise<UserEntity | null> {
-        const user = await this.userModel
-            .query()
-            .where('id', id)
-            .first();
+	public async findById(id: number): Promise<UserEntity | null> {
+		const user = await this.userModel.query().where('id', id).first();
 
-        if (!user) {
-            return null;
-        }
+		if (!user) {
+			return null;
+		}
 
-        return UserEntity.initialize({
-            id: user.id,
-            email: user.email,
-            password: user.password
-        });
-    }
+		return UserEntity.initialize({
+			id: user.id,
+			email: user.email,
+			password: user.password,
+		});
+	}
 
-    public async create(userData: CreateUserDto): Promise<UserEntity | null> {
-        const { email, password } = userData;
+	public async create(userData: CreateUserDto): Promise<UserEntity | null> {
+		const { email, password } = userData;
 
-        const user = await this.userModel
-            .query()
-            .insertAndFetch({ email, password });
+		const user = await this.userModel
+			.query()
+			.insertAndFetch({ email, password });
 
-        return UserEntity.initialize({
-            id: null,
-            email: user.email,
-            password: password
-        });
-    }
+		return UserEntity.initialize({
+			id: null,
+			email: user.email,
+			password: password,
+		});
+	}
 }
 
 export { UserRepository };

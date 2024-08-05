@@ -1,1 +1,1 @@
-export { createRoomToUserEntities } from "./room-to-user";
+export { createRoomToUserEntities } from './room-to-user';

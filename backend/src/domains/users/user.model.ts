@@ -1,17 +1,16 @@
-import {Model} from "objection";
+import { Model } from 'objection';
 
 class UserModel extends Model {
-    public 'email': string;
-    public 'password': string;
-    public 'id': number;
+	public 'email': string;
+	public 'password': string;
+	public 'id': number;
 
-    public static override get tableName(): string {
-        return "users";
-    }
+	public static override get tableName(): string {
+		return 'users';
+	}
 
-    public static override get relationMappings() {
-        return {};
-    }
-
+	public static override get relationMappings() {
+		return {};
+	}
 }
 export { UserModel };
